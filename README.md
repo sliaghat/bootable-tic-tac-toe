@@ -20,12 +20,41 @@ The program is a small kernel that takes control of the screen and keyboard. It 
 To build and test the project, you need:
 
 - **NASM** – the Netwide Assembler
-- **GNU ld** – the linker (usually part of binutils)
-- **GRUB** – for creating the bootable ISO (specifically `grub-mkrescue`)
-- **QEMU** – to emulate the system (optional, but recommended for testing)
+- **QEMU** or **VirtualBox** – to emulate the system
 
-Install them on a Linux system with:
+## Usage
+``` bash
+# assemble and link
+nasm -felf32 -o boot.o boot.asm
+nasm -felf32 -o kernel.o kernel.asm
+ld -m elf_i386 -T linker.ld -o kernel.bin kernel.o boot.o
 
-```bash
-sudo apt update
-sudo apt install nasm binutils grub-pc-bin xorriso qemu-system-x86
+# check if kernel.bin valid
+if grub-file --is-x86-multiboot kernel.bin; then
+  echo alright
+else
+  trap 'echo problem with kernel.bin' ERR
+fi
+
+# create the booting directory structure
+mkdir -p isodir/boot/grub
+cp kernel.bin isodir/boot/kernel.bin
+cp grub.cfg isodir/boot/grub/grub.cfg
+grub-mkrescue -o BootableTicTacToe.iso isodir
+
+# qemu
+qemu-system-x86_64 -boot d -cdrom BootableTicTacToe.iso -m 2048
+
+# or just use the iso to create a new vm in VirtualBox
+# have fun playing tic-tac-toe!
+```
+
+## Some Images
+#### Start Menu
+<img width="719" height="388" alt="start-menu2" src="https://github.com/user-attachments/assets/33b0cdd0-7c89-4280-9ac3-71a7d254e2d4" />
+
+#### Game
+<img width="719" height="394" alt="game2" src="https://github.com/user-attachments/assets/33265557-b3b3-4bc5-934d-984f7d9f4f82" />
+
+#### Draw
+<img width="719" height="396" alt="exit-menu2" src="https://github.com/user-attachments/assets/e7f31898-fb71-41e0-b8ee-182f9907c364" />
