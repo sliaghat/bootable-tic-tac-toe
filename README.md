@@ -1,6 +1,6 @@
 # bootable tic-tac-toe
 
-This repository contains a **bootable** version of the classic Tic‑Tac‑Toe game, implemented entirely in x86 assembly (NASM). The game runs directly on bare metal, without the need for an operating system. The game features an **unbeatable AI** implemented via the minimax algorithm, which means that the computer will never lose (it will either win or draw).
+This repository contains a **bootable** version of the traditional tic-tac-toe game, fully implemented in x86 assembly (NASM). The game runs directly on bare metal, without the need for an operating system. This game also features an **unbeatable AI** that uses the minimax algorithm, which means that the computer will never lose (it will either win or draw).
 
 ## Features
 
